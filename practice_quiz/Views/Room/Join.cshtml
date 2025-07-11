@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Join";
+}
+
+<div class="menu">
+    <h1 style="font-size:75px">Найти комнату</h1>
+</div>
+
+<div class="menu">
+<input type="text" id="roomCode" placeholder="Ввелите код комнаты" />
+</div>
+<div class="menu">
+<input type="text" id="playerName" placeholder="Введите имя" />
+</div>
+<div class="menu">
+    <div class="ui">
+        <button id="joinBtn" style="width:500px; font-size:32px;">Найти</button>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/gamehub")
+        .build();
+
+    let connectionReady = false;
+
+    connection.start().then(() => {
+        connectionReady = true;
+        console.log("SignalR connected (Join)");
+    }).catch(err => console.error(err.toString()));
+
+    document.getElementById("joinBtn").addEventListener("click", function () {
+        if (!connectionReady) {
+            alert("SignalR not connected yet.");
+            return;
+        }
+
+        const roomCode = document.getElementById("roomCode").value;
+        const playerName = document.getElementById("playerName").value;
+
+        connection.invoke("JoinRoom", roomCode, playerName);
+    });
+
+    connection.on("RoomJoined", function (roomCode) {
+        const playerName = document.getElementById("playerName").value;
+        window.location.href = `/Room/Lobby?roomCode=${roomCode}&playerName=${playerName}`;
+    });
+
+    connection.on("Error", function (message) {
+        alert(message);
+    });
+</script>

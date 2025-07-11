@@ -1,0 +1,71 @@
+﻿@model IEnumerable<practice_quiz.Models.Quiz>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Вопросы викторины</h1>
+
+<p>
+    <a asp-action="Create">Создать</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Категория
+            </th>
+            <th>
+                Описание
+            </th>
+            <th>
+                Ответ1
+            </th>
+            <th>
+                Ответ2
+            </th>
+            <th>
+                Ответ3
+            </th>
+            <th>
+                Ответ4
+            </th>
+            <th>
+                Правильный ответ
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Option1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Option2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Option3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Option4)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Answer)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.QuizId">Изменить</a> |
+                <a asp-action="Details" asp-route-id="@item.QuizId">Инфо</a> |
+                <a asp-action="Delete" asp-route-id="@item.QuizId">Удалить</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

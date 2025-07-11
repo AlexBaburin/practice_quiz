@@ -1,0 +1,162 @@
+﻿@{
+    ViewData["Title"] = "Quiz Game";
+    var roomCode = ViewBag.RoomCode;
+    var playerName = ViewBag.PlayerName;
+}
+<div id="game">
+    <div style="display: flex;">
+        <div style="flex: 1;">
+            <h2>Комната: @roomCode</h2>
+            <h3>Игрок: @playerName</h3>
+            <h4 id="timer">Время: 10</h4>
+        </div>
+        <div style="flex: 0 0 250px; margin-left: 20px;">
+            <h3>Игроки</h3>
+            <ul id="playerList"></ul>
+        </div>
+    </div>
+    <div class="main-menu">
+        <h2 id="questionText"></h2>
+    </div>
+    <div class="main-menu" style="display:grid">
+        <div id="options1" style="display:flex; justify-content:space-between"></div>
+        <div id="options2" style="display:flex; justify-content:space-between"></div>
+    </div>
+    <div class="main-menu">
+        <h2 id="feedback"></h2>
+    </div>
+</div>
+<div class="main-menu">
+    <h2>Ваши очки: <span id="score">0</span></h2>
+</div>
+<div class="main-menu">
+    <div id="over" style="margin-top:50px"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+<script>
+    const connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build();
+    const roomCode = "@roomCode";
+    const playerName = @Html.Raw(Json.Serialize(ViewBag.PlayerName));;
+
+    let hasAnswered = false;
+    let currentQuizId = 0;
+    let timeLeft = 10;
+    let timerInterval = null;
+
+        connection.start().then(() => {
+        console.log("Connected");
+        connection.invoke("JoinGroup", roomCode);
+    });
+
+    connection.on("GameStarted", function () {
+        document.getElementById("feedback").textContent = "Игра начинается...";
+    });
+
+    connection.on("ReceiveQuestion", function (q) {
+        console.log("Received quiz:", q);
+        hasAnswered = false; // Reset for new question
+        document.getElementById("feedback").textContent = "";
+        currentQuizId = q.quizId;
+        document.getElementById("questionText").textContent = q.description;
+
+        const options1 = [q.option1, q.option2];
+        const options2 = [q.option3, q.option4];
+        const container1 = document.getElementById("options1");
+        const container2 = document.getElementById("options2");
+        container1.innerHTML = "";
+        container2.innerHTML = "";
+
+        options1.forEach((opt, i) => {
+        if (!opt) return; // Skip null/undefined options
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => submitAnswer(i + 1);
+        btn.style.margin = "10px";
+        container1.appendChild(btn);
+        });
+
+        options2.forEach((opt, i) => {
+        if (!opt) return; // Skip null/undefined options
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => submitAnswer(i + 3);
+        btn.style.margin = "10px";
+        container2.appendChild(btn);
+        });
+    });
+
+
+
+    connection.on("UpdateTimer", function (seconds) {
+        timeLeft = seconds;
+        console.log(timeLeft);
+        document.getElementById("timer").textContent = `Время: ${seconds}`;
+    });
+
+    connection.on("AnswerResult", function (isCorrect) {
+        document.getElementById("feedback").textContent = isCorrect ? "Ответ правильный!" : "Ответ не правильный!";
+    });
+
+    connection.on("UpdateScore", function (score) {
+        document.getElementById("score").textContent = score;
+    });
+
+    connection.on("TimeUp", function () {
+        document.getElementById("feedback").textContent = "Время окончено!";
+        hasAnswered = true;
+        disableOptions();
+    });
+
+    connection.on("GameEnded", function (players) {
+        document.getElementById("feedback").textContent = "Игра окончена!";
+
+        // Find highest scorer
+        const container = document.getElementById("over");
+        container.innerHTML = "";
+        if (players.length > 0) {
+            players.sort((a, b) => b.score - a.score);
+            const winner = players[0];
+            const winnerText = document.createElement("h2");
+            winnerText.textContent = `🏆 Победитель: ${winner.name} Очки: ${winner.score}`;
+            container.appendChild(winnerText);
+        }
+        document.getElementById("game").style.display="none";
+       
+        const btn = document.createElement("button");
+        btn.textContent = "Вернуться в лобби";
+        btn.onclick = () => {
+            window.location.href = `/Room/Lobby/?roomCode=${roomCode}&playerName=${playerName}`;
+        };
+        container.appendChild(btn);
+    });
+
+
+    connection.on("PlayerListUpdated", function (players) {
+        const list = document.getElementById("playerList");
+        list.innerHTML = "";
+        players.sort((a, b) => b.score - a.score);
+        players.forEach(p => {
+            const li = document.createElement("li");
+            li.textContent = `${p.name}: ${p.score}`;
+            list.appendChild(li);
+        });
+    });
+
+    function submitAnswer(selectedOption) {
+        if (hasAnswered) return; // Prevent double answering
+
+        hasAnswered = true;
+        disableOptions();
+
+        connection.invoke("SubmitAnswer", roomCode, playerName, currentQuizId, selectedOption, timeLeft);
+    }
+
+    function disableOptions() {
+        const buttons1 = document.querySelectorAll("#options1 button");
+        buttons1.forEach(btn => btn.disabled = true);
+        const buttons2 = document.querySelectorAll("#options2 button");
+        buttons2.forEach(btn => btn.disabled = true);
+    }
+
+</script>

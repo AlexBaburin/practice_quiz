@@ -1,0 +1,59 @@
+﻿@model practice_quiz.Models.Quiz
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Инфо</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Категория
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+        <dt class = "col-sm-2">
+            Описание
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            Ответ1
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Option1)
+        </dd>
+        <dt class = "col-sm-2">
+            Ответ2
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Option2)
+        </dd>
+        <dt class = "col-sm-2">
+            Ответ3
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Option3)
+        </dd>
+        <dt class = "col-sm-2">
+            Ответ4
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Option4)
+        </dd>
+        <dt class = "col-sm-2">
+            Правильный ответ
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Answer)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.QuizId">Изменить</a> |
+    <a asp-action="Questions">Назад</a>
+</div>

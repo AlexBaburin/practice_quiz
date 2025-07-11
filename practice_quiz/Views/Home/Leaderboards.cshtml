@@ -1,0 +1,38 @@
+﻿@model IEnumerable<practice_quiz.Models.Leaderboard>
+
+@{
+    ViewData["Title"] = "Leaderboards";
+}
+
+<h1>Таблица Лидеров</h1>
+
+<div class="ui">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Имя
+                </th>
+                <th>
+                    Очки
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Score)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button style="background-color:#c51515"> 
+        <a asp-action="Index">Назад</a>
+    </button>
+</div>

@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Lobby";
+    var roomCode = ViewBag.RoomCode;
+    var playerName = ViewBag.PlayerName;
+}
+
+<h2>Код комнаты: @roomCode</h2>
+<div style="margin:30px"></div>
+<h2>Игроки:</h2>
+<div class="player-list">
+    <ul id="playerList"></ul>
+</div>
+<div class="ui">
+    <button id="startGameBtn" style="display:none;" onclick="startGame()">Начать игру</button>
+    <button style="background-color:#c51515">
+        <a asp-controller="Home" asp-action="Index">Выйти</a>
+    </button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/gamehub")
+        .build();
+
+    const roomCode = "@roomCode";
+    const playerName = @Html.Raw(Json.Serialize(ViewBag.PlayerName));;
+
+    connection.start().then(() => {
+        console.log("SignalR connected (Lobby)");
+
+        // Join the room and notify server
+        connection.invoke("JoinRoom", roomCode, playerName);
+    }).catch(err => {
+        console.error("Connection failed:", err);
+    });
+
+    connection.on("ReceivePlayerList", function (players) {
+        const list = document.getElementById("playerList");
+        list.innerHTML = ""; // Clear current list
+
+        players.forEach(name => {
+            const li = document.createElement("li");
+            li.textContent = name;
+            list.appendChild(li);
+        });
+
+        // Show Start button if this player is the first one (host)
+        if (players.length > 0 && players[0] === playerName) {
+            document.getElementById("startGameBtn").style.display = "inline-block";
+        } else {
+            document.getElementById("startGameBtn").style.display = "none";
+        }
+    });
+
+    function startGame() {
+        connection.invoke("StartGame", roomCode);
+    }
+
+    connection.on("GameStarted", function () {
+        window.location.href = `/Room/StartQuiz?roomCode=${roomCode}&playerName=${playerName}`;
+    });
+</script>

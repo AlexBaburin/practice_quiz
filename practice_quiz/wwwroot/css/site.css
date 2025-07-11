@@ -1,0 +1,215 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+.main {
+    margin: auto;
+}
+
+.ui button {
+    margin-inline: auto;
+    background-color: #4CAF50;
+    font-size: 18px;
+    color: white;
+    padding: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.ui a {
+    text-decoration: none;
+    color: white;
+}
+.ui button:hover {
+    transform: scale(1.01);
+}
+
+.menu {
+    justify-content: center;
+    display: flex;
+}
+    .menu input{
+        width:500px;
+        margin:5px;
+        font-size:24px;
+    }
+.player-list {
+    font-size: 24px;
+}
+    .player-list li{
+        border-width:1px;
+        border-color:black;
+    }
+
+.main-menu {
+    justify-content: center;
+    display:flex;
+}
+    .main-menu button {
+        width:500px;
+        margin-inline:auto;
+        background-color: #4CAF50;
+        font-size: 48px;
+        color: white;
+        padding: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .main-menu button:hover {
+        transform:scale(1.01);
+    }
+
+    .main-menu button:disabled {
+        background-color:darkgray;
+    }
+
+    .main-menu a{
+        text-decoration:none;
+        color:white;
+    }
+
+.table-head {
+    background: none; 
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+.Denied-body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+
+.Denied-container {
+    text-align: center;
+    background: white;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+    .Denied-container h1 {
+        color: #e63946;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+
+    .Denied-container p {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+    }
+
+    .Denied-container a {
+        display: inline-block;
+        text-decoration: none;
+        background-color: mediumseagreen;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: background-color 0.3s;
+    }
+
+        .Denied-container a:hover {
+            background-color: darkgreen;
+        }
+
+    .Denied-container img {
+        max-width: 100px;
+        margin-bottom: 20px;
+    }
+
+.table {
+    width: 100%;
+    border-collapse: collapse; /* Collapse borders for cleaner look */
+    margin: 20px 0; /* Space around the table */
+}
+
+/* Table Header Styling */
+.table th {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    padding: 12px; /* Padding for header cells */
+    text-align: left; /* Align header text to the left */
+}
+    .table button {
+        background-color: #4CAF50; /* Green background */
+        margin: 5px;
+        border-color: seagreen;
+        color: white; /* White text */
+        padding: 12px; /* Padding for header cells */
+        text-decoration: none;
+    }
+
+        .table button:hover {
+            cursor: pointer;
+        }
+
+/* Table Data Cell Styling */
+.table td {
+    padding: 12px; /* Padding for data cells */
+    border: 1px solid #ddd; /* Light gray border */
+}
+
+/* Alternating Row Colors */
+.table tr:nth-child(even) {
+    background-color: #f2f2f2; /* Light gray background for even rows */
+}
+
+.table tr:hover {
+    background-color: #ddd; /* Highlight row on hover */
+}
+
+/* Optional: Table Border Styling */
+    .table table, th, td {
+        height: auto;
+        border: 1px solid #ddd; /* Gray borders for table, header, and data cells */
+    }
+
+/* Optional: Footer Styling (if you use a table footer) */
+.table tfoot {
+    background-color: #f9f9f9; /* Light gray background for footer */
+    font-weight: bold; /* Bold text for footer */
+}
+
+/* Optional: Table Caption Styling */
+.table caption {
+    font-size: 1.5em; /* Larger font for table caption */
+    margin: 10px 0; /* Margin above and below caption */
+}
+
+.create_btn {
+    background-color: #4CAF50 !important; /* Green background */
+    width: auto !important;
+    margin: 5px !important;
+    border-color: seagreen !important;
+    color: white !important; /* White text */
+    padding: 12px !important; /* Padding for header cells */
+}
