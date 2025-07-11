@@ -19,13 +19,11 @@ namespace practice_quiz.Controllers
             _quizService = QuizService;
         }
 
-        // GET: Quizs
         public async Task<IActionResult> Questions()
         {
             return View(await _quizService.GetAllQuizzesAsync());
         }
 
-        // GET: Quizs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -42,13 +40,11 @@ namespace practice_quiz.Controllers
             return View(quiz);
         }
 
-        // GET: Quizs/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Quizs/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("QuizId,Category,Description,Option1,Option2,Option3,Option4,Answer")] Quiz quiz)
@@ -61,7 +57,6 @@ namespace practice_quiz.Controllers
             return View(quiz);
         }
 
-        // GET: Quizs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,7 +72,6 @@ namespace practice_quiz.Controllers
             return View(quiz);
         }
 
-        // POST: Quizs/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("QuizId,Category,Description,Option1,Option2,Option3,Option4,Answer")] Quiz quiz)
@@ -102,7 +96,6 @@ namespace practice_quiz.Controllers
             return View(quiz);
         }
 
-        // GET: Quizs/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -119,7 +112,6 @@ namespace practice_quiz.Controllers
             return View(quiz);
         }
 
-        // POST: Quizs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
